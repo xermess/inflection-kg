@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "kyrgyz"
+dynamic = ["version"]
+description = "A rule-based morphological engine for Kyrgyz: case inflection driven by vowel harmony and consonant assimilation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ email = "mealibek.dev@gmail.com" }]
+keywords = ["kyrgyz", "morphology", "inflection", "nlp", "turkic", "vowel-harmony", "linguistics"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Text Processing :: Linguistic",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "mypy>=1.10", "ruff>=0.5"]
+
+[tool.hatch.version]
+path = "src/kyrgyz/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/kyrgyz"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src"]
+pythonpath = ["src"]
+addopts = ["--doctest-modules", "--strict-markers"]
+
+[tool.mypy]
+strict = true
+files = ["src"]
+
+[tool.ruff]
+line-length = 110
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+# Kyrgyz Cyrillic letters in strings and docstrings are intentional.
+ignore = ["RUF001", "RUF002", "RUF003"]

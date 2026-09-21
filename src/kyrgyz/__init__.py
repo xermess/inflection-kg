@@ -16,7 +16,7 @@ from kyrgyz.inflector import InflectionResult, Inflector, Source, inflect, infle
 from kyrgyz.lexicon import LexicalEntry, Lexicon
 from kyrgyz.word import Word
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 __all__ = [
     "AmbiguousWordError",

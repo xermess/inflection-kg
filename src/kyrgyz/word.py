@@ -7,6 +7,7 @@ import unicodedata
 from dataclasses import dataclass
 
 from kyrgyz.errors import InvalidWordError
+from kyrgyz.numbers import is_numeric
 from kyrgyz.phonology.alphabet import LETTERS, SIGNS
 
 _LOWER = "".join(sorted(LETTERS))
@@ -33,6 +34,8 @@ def normalize_text(value: object, *, what: str = "word") -> str:
     text = unicodedata.normalize("NFC", value)
     if not text:
         raise InvalidWordError(f"{what} must not be empty")
+    if is_numeric(text):
+        return text
     for char in text:
         if char not in _ALLOWED_LETTERS and char not in _SEPARATORS:
             raise InvalidWordError(f"{what} {value!r} contains {_describe(char)}")
@@ -51,7 +54,7 @@ def _describe(char: str) -> str:
     if name.startswith("CYRILLIC"):
         return description + "; it is not a letter of the Kyrgyz alphabet"
     if char.isdigit():
-        return description + "; numerals are not supported"
+        return description + "; only standalone integer numerals are supported"
     return description
 
 
@@ -91,6 +94,11 @@ class Word:
                     f"pronunciation {self.pronunciation!r} must end in a vowel or consonant letter"
                 )
             object.__setattr__(self, "pronunciation", pronunciation)
+
+    @property
+    def is_numeric(self) -> bool:
+        """Whether this word is a supported numeric value."""
+        return is_numeric(self.text)
 
     @classmethod
     def coerce(cls, value: str | Word) -> Word:

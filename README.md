@@ -33,6 +33,7 @@ strings: `туз → тузга` but `кол → колго`, `педагог �
 | Loanwords: written voiced finals (§32), я/ё/ю/э, final ь | ✅ |
 | Proper names, hyphenated and multi-word names | ✅ |
 | Abbreviations (orthographic rules §55) | ✅ with metadata |
+| Numeric values (integer grouping preserved) | ✅ |
 | Irregular personal pronouns (мен, сен, ал) | ✅ |
 | Letter-case preservation, Unicode NFC normalisation | ✅ |
 | Plural, possessive, possessive declension | 🔜 Phase 3 |
@@ -94,6 +95,17 @@ inflect("БИШКЕК", case=DATIVE)  # 'БИШКЕККЕ'  (flagged: could be a
 inflect("Мен", case=DATIVE)  # 'Мага'      lexicon forms copy the input's capitalisation
 ```
 
+### Numeric values
+
+Integer values may be written without grouping or with single spaces between
+three-digit groups. The suffix follows the Kyrgyz reading of the number, while
+the original digits and grouping are preserved:
+
+```python
+inflect("5 000", case=Case.ABLATIVE)  # '5 000ден' (беш миңден)
+inflect("200 000", case=DATIVE)  # '200 000ге' (эки жүз миңге)
+```
+
 ### Abbreviations
 
 Orthographic rules §55 say that a suffix on an abbreviation follows its
@@ -144,7 +156,7 @@ pronunciation), or a final `ъ`.
 
 | Exception | Raised for |
 |---|---|
-| `InvalidWordError` (also a `ValueError`) | empty input, Latin letters or look-alikes, digits, punctuation, non-Kyrgyz Cyrillic (`ұ`, `ә`), stray hyphens/spaces |
+| `InvalidWordError` (also a `ValueError`) | empty input, Latin letters or look-alikes, malformed numeric values, punctuation, non-Kyrgyz Cyrillic (`ұ`, `ә`), stray hyphens/spaces |
 | `AmbiguousWordError` | suffix cannot be chosen without guessing; strict-mode uncertainty |
 | `TypeError` | a non-`str` word or a non-`Case` case |
 

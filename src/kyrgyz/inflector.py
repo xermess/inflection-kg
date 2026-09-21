@@ -24,6 +24,7 @@ from kyrgyz.errors import AmbiguousWordError
 from kyrgyz.features import Features
 from kyrgyz.lexicon.lexicon import Lexicon
 from kyrgyz.morphology.noun import inflect_noun
+from kyrgyz.numbers import pronunciation
 from kyrgyz.phonology.analysis import PhonologicalProfile, last_word
 from kyrgyz.word import Word
 
@@ -132,7 +133,8 @@ class Inflector:
         )
 
     def _from_rules(self, word: Word, features: Features) -> InflectionResult:
-        form = inflect_noun(word.text, features, pronunciation=word.pronunciation)
+        spoken_form = pronunciation(word.text) if word.is_numeric else word.pronunciation
+        form = inflect_noun(word.text, features, pronunciation=spoken_form)
         uncertainties = set(form.uncertainties)
         suffix = form.suffix
 

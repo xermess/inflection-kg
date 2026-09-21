@@ -7,7 +7,7 @@ import unicodedata
 import pytest
 
 from kyrgyz import InvalidWordError, Word, inflect
-from kyrgyz.cases import DATIVE, GENITIVE, LOCATIVE
+from kyrgyz.cases import ABLATIVE, DATIVE, GENITIVE, LOCATIVE
 
 # --- Invalid input -----------------------------------------------------------------------
 
@@ -20,7 +20,6 @@ from kyrgyz.cases import DATIVE, GENITIVE, LOCATIVE
         ("Aлибек", "Latin"),  # Latin capital A look-alike
         ("мектeп", "Latin"),  # Latin small e look-alike
         ("Алибек1", "numerals"),
-        ("2024", "numerals"),
         ("Алибек!", "unsupported character"),
         ("Алибек.", "unsupported character"),
         ("кұс", "not a letter of the Kyrgyz alphabet"),  # Kazakh ұ
@@ -43,6 +42,30 @@ def test_invalid_words_are_rejected(value: str, message: str) -> None:
 def test_invalid_word_error_is_a_value_error() -> None:
     with pytest.raises(ValueError):
         inflect("Alibek", case=DATIVE)
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    [
+        ("5", "5ке"),
+        ("5 000", "5 000ге"),
+        ("200 000", "200 000ге"),
+        ("21", "21ге"),
+        ("20", "20га"),
+    ],
+)
+def test_numeric_values_use_their_kyrgyz_reading_for_suffixes(value: str, expected: str) -> None:
+    assert inflect(value, case=DATIVE) == expected
+
+
+def test_numeric_values_preserve_grouping_and_support_ablative() -> None:
+    assert inflect("5 000", case=ABLATIVE) == "5 000ден"
+
+
+@pytest.mark.parametrize("value", ["02", "5 00", "5 0000", "5.0", "-"])
+def test_malformed_numeric_values_are_rejected(value: str) -> None:
+    with pytest.raises(InvalidWordError):
+        inflect(value, case=DATIVE)
 
 
 @pytest.mark.parametrize("value", [None, 42, b"\xd2\xaf\xd0\xb9", ["үй"]])

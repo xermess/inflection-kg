@@ -18,9 +18,9 @@ class KyrgyzError(Exception):
 class InvalidWordError(KyrgyzError, ValueError):
     """The input is not a well-formed Kyrgyz Cyrillic word.
 
-    Raised for empty strings, digits, punctuation, Latin look-alike letters,
-    letters of other Cyrillic alphabets (e.g. Kazakh ``ұ``), malformed hyphens
-    or spaces, and similar problems.
+    Raised for empty strings, malformed numeric values, punctuation, Latin
+    look-alike letters, letters of other Cyrillic alphabets (e.g. Kazakh
+    ``ұ``), malformed hyphens or spaces, and similar problems.
     """
 
 

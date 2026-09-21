@@ -4,9 +4,9 @@ Part 1 prints words grouped by the rule that makes them tricky.
 Part 2 fills sentence templates, inflecting each slot for the case it needs.
 
 Usage:
-    python src/complex_cases.py                     # both parts
-    python src/complex_cases.py --per-template 5    # more sentences
-    python src/complex_cases.py --seed 7            # a different random selection
+    python examples/complex_cases.py                     # both parts
+    python examples/complex_cases.py --per-template 5    # more sentences
+    python examples/complex_cases.py --seed 7            # a different random selection
 """
 
 from __future__ import annotations

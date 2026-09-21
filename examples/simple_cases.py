@@ -1,9 +1,9 @@
 """Print the six-case paradigm of Kyrgyz words.
 
 Usage:
-    python main.py                  # a built-in sample of words
-    python main.py үй Алибек Ош     # your own words
-    python main.py --strict БИШКЕК  # refuse uncertain forms instead of marking them
+    python examples/simple_cases.py                  # a built-in sample of words
+    python examples/simple_cases.py үй Алибек Ош     # your own words
+    python examples/simple_cases.py --strict БИШКЕК  # refuse uncertain forms instead of marking them
 """
 
 import argparse
